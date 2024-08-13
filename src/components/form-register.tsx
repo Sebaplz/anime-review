@@ -32,15 +32,21 @@ const FormRegister = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="m-5 mx-10 flex-col justify-center gap-2 space-y-4 rounded-r-lg border-transparent bg-transparent align-middle md:flex lg:min-w-96"
+      >
         <FormField
           control={form.control}
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>UserName</FormLabel>
+              <h1 className="mb-4 flex justify-center align-middle font-bold decoration-indigo-950 md:mb-10 md:text-lg lg:text-xl">
+                Registro de usuario
+              </h1>
+              <FormLabel>Nombre de usuario</FormLabel>
               <FormControl>
-                <Input placeholder="Username" type="text" {...field} />
+                <Input placeholder="Nombre de usuario" type="text" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -53,7 +59,11 @@ const FormRegister = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="email@email.com" type="email" {...field} />
+                <Input
+                  placeholder="email@ejemplo.com"
+                  type="email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -85,7 +95,7 @@ const FormRegister = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Registrar usuario</Button>
       </form>
     </Form>
   );
