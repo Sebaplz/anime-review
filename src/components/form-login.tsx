@@ -30,12 +30,13 @@ const FormLogin = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="md:flex flex-col justify-center align-middle gap-5 space-y-8 mx-10 rounded-r-lg border-transparent bg-transparent lg:min-w-96  m-5">
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
+              <h1 className="flex justify-center align-middle decoration-indigo-950 font-bold md:text-lg lg:text-xl">Login</h1>
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input placeholder="email" type="email" {...field} />
@@ -57,7 +58,7 @@ const FormLogin = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className="bg-indigo-950">Submit</Button>
       </form>
     </Form>
   );
