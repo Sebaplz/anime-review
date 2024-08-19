@@ -1,7 +1,13 @@
+import { auth } from "../../../../auth";
+import { redirect } from "next/navigation";
 import FormLogin from "@/components/form-login";
 
-const LoginPage = () => {
-  return <FormLogin />;
-};
+export default async function LoginPage() {
+  const session = await auth();
 
-export default LoginPage;
+  if (session?.user) {
+    redirect("/");
+  }
+
+  return <FormLogin />;
+}
