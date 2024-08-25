@@ -48,7 +48,7 @@ const FormLogin = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="m-5 mx-10 flex-col justify-center gap-5 space-y-8 rounded-r-lg border-transparent bg-transparent align-middle md:flex lg:min-w-96"
+        className="m-5 mx-10 flex-col justify-center gap-5 space-y-8 rounded-r-lg border-transparent bg-transparent align-middle text-black md:flex lg:min-w-96"
       >
         <FormField
           control={form.control}
