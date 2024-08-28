@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`flex min-h-screen items-center justify-center bg-indigo-950 ${inter.className}`}
+        className={`mx-auto min-h-screen max-w-7xl bg-[url('https://static.vecteezy.com/system/resources/previews/046/892/800/non_2x/comic-panels-in-various-colors-and-angles-comic-images-image-panels-cartoon-backgrounds-suitable-for-headlines-or-places-for-anime-images-vector.jpg')] bg-repeat-round text-white ${inter.className}`}
       >
         {children}
       </body>
