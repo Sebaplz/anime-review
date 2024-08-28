@@ -12,14 +12,12 @@ import { Input } from "@/components/ui/input";
 import { loginSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const FormLogin = () => {
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -32,15 +30,13 @@ const FormLogin = () => {
     const result = await signIn("credentials", {
       email: values.email,
       password: values.password,
-      redirect: false,
+      redirectTo: "/",
     });
 
     if (result?.error) {
       setError(
         "Las credenciales son incorrectas, por favor, inténtalo de nuevo.",
       );
-    } else {
-      router.push("/");
     }
   }
 

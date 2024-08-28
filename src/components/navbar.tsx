@@ -17,12 +17,14 @@ const Navbar = async () => {
       <img src="logo.png" alt="Logo" className="h-14 w-14 rounded-2xl" />
       {session?.user ? (
         <ul className="flex items-center gap-4">
-          <li>{session.user.email}!</li>
+          <li>{session?.user?.email}!</li>
           <Popover>
             <PopoverTrigger>
               <Avatar>
                 <AvatarImage src="avatar.png" />
-                <AvatarFallback>PH</AvatarFallback>
+                <AvatarFallback className="text-black">
+                  {session.user.username.slice(0, 2)}
+                </AvatarFallback>
               </Avatar>
             </PopoverTrigger>
             <PopoverContent className="mr-10 mt-4 flex flex-col justify-center md:w-96">
