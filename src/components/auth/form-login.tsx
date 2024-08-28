@@ -13,14 +13,12 @@ import { loginSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const FormLogin = () => {
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -33,15 +31,13 @@ const FormLogin = () => {
     const result = await signIn("credentials", {
       email: values.email,
       password: values.password,
-      redirect: false,
+      redirectTo: "/",
     });
 
     if (result?.error) {
       setError(
         "Las credenciales son incorrectas, por favor, inténtalo de nuevo.",
       );
-    } else {
-      router.push("/");
     }
   }
 
@@ -49,7 +45,7 @@ const FormLogin = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="m-5 mx-10 flex-col justify-center gap-5 space-y-8 rounded-r-lg border-transparent bg-transparent align-middle md:flex lg:min-w-96"
+        className="m-5 mx-10 flex-col justify-center gap-5 space-y-8 rounded-r-lg border-transparent bg-transparent align-middle text-black md:flex lg:min-w-96"
       >
         <FormField
           control={form.control}

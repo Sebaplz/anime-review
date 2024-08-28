@@ -1,26 +1,46 @@
-import NextAuth, { CredentialsSignin, User } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
 import instance from "@/lib/instance";
-import { JWT } from "next-auth/jwt";
+import { decodeToken } from "@/utils/jwt-decode";
+import NextAuth, { CredentialsSignin } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+
+// Extend User and Session types
+declare module "next-auth" {
+  interface User {
+    username: string;
+    token: string;
+  }
+
+  interface Session {
+    accessToken: string;
+  }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
       async authorize(credentials) {
         try {
-          const response = await instance.post("/api/user/login", credentials);
+          const response = await instance.post(
+            "/api/v1/auth/authenticate",
+            credentials,
+          );
           if (response.status === 200) {
-            return response.data;
+            const decodedToken = decodeToken(response.data.token);
+            return {
+              ...response.data.user,
+              ...decodedToken,
+              token: response.data.token,
+            };
           }
           throw new Error("Credenciales inválidas");
         } catch (error) {
           console.error("Error de autenticación:", error);
 
-          if (error.response && error.response.status === 401) {
+          if (
+            error instanceof Error &&
+            error.response &&
+            error.response.status === 401
+          ) {
             throw new CredentialsSignin("Credenciales inválidas");
           }
 
@@ -32,16 +52,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ token, user }: { token: JWT; user?: User }): JWT {
+    jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.email = user.email;
+        token.username = user.username;
+        token.accessToken = user.token;
       }
       return token;
     },
-    session({ session, token }: { session: any; token: JWT }) {
-      if (session.user) {
-        session.user.id = token.id;
-      }
+    session({ session, token }) {
+      session.user = {
+        id: token.id as string,
+        email: token.email as string,
+        username: token.username as string,
+      };
+      session.accessToken = token.accessToken as string;
       return session;
     },
   },
