@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { registerSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -95,7 +96,24 @@ const FormRegister = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Registrar usuario</Button>
+
+        <div className="flex flex-col">
+          <Button type="submit" className="hover:bg-sky-500">
+            Registrar usuario
+          </Button>
+          <div className="flex justify-between">
+            <Button variant="link">
+              <Link href="/" className="hover:text-sky-500">
+                Volver al Inicio
+              </Link>
+            </Button>
+            <Button variant="link">
+              <Link href="/login" className="hover:text-sky-500">
+                Ya tengo cuenta
+              </Link>
+            </Button>
+          </div>
+        </div>
       </form>
     </Form>
   );

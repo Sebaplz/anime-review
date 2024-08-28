@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { loginSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -84,9 +85,24 @@ const FormLogin = () => {
           )}
         />
         {error && <p className="text-red-500">{error}</p>}
-        <Button type="submit" className="bg-indigo-950">
-          Iniciar sesión
-        </Button>
+
+        <div className="flex flex-col">
+          <Button type="submit" className="bg-indigo-950 hover:bg-sky-500">
+            Iniciar sesión
+          </Button>
+          <div className="flex justify-between">
+            <Button variant="link">
+              <Link href="/" className="hover:text-sky-500">
+                Volver al inicio
+              </Link>
+            </Button>
+            <Button variant="link">
+              <Link href="/register" className="hover:text-sky-500">
+                Crear cuenta
+              </Link>
+            </Button>
+          </div>
+        </div>
       </form>
     </Form>
   );
