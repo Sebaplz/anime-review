@@ -17,7 +17,7 @@ const Navbar = async () => {
       <img src="logo.png" alt="Logo" className="h-14 w-14 rounded-2xl" />
       {session?.user ? (
         <ul className="flex items-center gap-4">
-          <li>{session?.user?.email}!</li>
+          <li>{session?.user?.username}!</li>
           <Popover>
             <PopoverTrigger>
               <Avatar>
@@ -37,7 +37,9 @@ const Navbar = async () => {
                 <form
                   action={async () => {
                     "use server";
-                    await signOut();
+                    await signOut({
+                      redirectTo: "/",
+                    });
                   }}
                 >
                   <Button variant="destructive" type="submit">

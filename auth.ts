@@ -1,73 +1,53 @@
 import instance from "@/lib/instance";
-import { decodeToken } from "@/utils/jwt-decode";
-import NextAuth, { CredentialsSignin } from "next-auth";
+import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-
-// Extend User and Session types
-declare module "next-auth" {
-  interface User {
-    username: string;
-    token: string;
-  }
-
-  interface Session {
-    accessToken: string;
-  }
-}
+import { decodeToken } from "@/utils/jwt-decode";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
       async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Email y contraseña son requeridos");
+        }
+
         try {
-          const response = await instance.post(
-            "/api/v1/auth/authenticate",
-            credentials,
-          );
-          if (response.status === 200) {
+          const response = await instance.post("/api/v1/auth/authenticate", {
+            email: credentials.email,
+            password: credentials.password,
+          });
+
+          if (response.status === 200 && response.data.token) {
             const decodedToken = decodeToken(response.data.token);
             return {
-              ...response.data.user,
+              ...response.data,
               ...decodedToken,
               token: response.data.token,
             };
+          } else {
+            throw new Error(response.data.error || "Autenticación fallida");
           }
-          throw new Error("Credenciales inválidas");
-        } catch (error) {
+        } catch (error: any) {
+          if (error.response?.data?.error) {
+            throw new Error(error.response.data.error);
+          }
           console.error("Error de autenticación:", error);
-
-          if (
-            error instanceof Error &&
-            error.response &&
-            error.response.status === 401
-          ) {
-            throw new CredentialsSignin("Credenciales inválidas");
-          }
-
-          throw new Error(
-            "Ocurrió un error al iniciar sesión. Por favor, inténtalo de nuevo.",
-          );
+          throw new Error("Error en la autenticación");
         }
       },
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
-        token.email = user.email;
-        token.username = user.username;
-        token.accessToken = user.token;
+        token.user = user;
+        token.role = user.role;
       }
       return token;
     },
-    session({ session, token }) {
-      session.user = {
-        id: token.id as string,
-        email: token.email as string,
-        username: token.username as string,
-      };
-      session.accessToken = token.accessToken as string;
+    async session({ session, token }) {
+      session.user = token.user as any;
+      session.user.role = token.role;
       return session;
     },
   },

@@ -15,8 +15,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import LoadingButton from "../loading-button";
+import { handleCredentialsSignup } from "@/actions/authActions";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const FormRegister = () => {
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -27,8 +33,13 @@ const FormRegister = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof registerSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof registerSchema>) {
+    const response = await handleCredentialsSignup(values);
+    if (response?.error) {
+      setError(response.error);
+    } else {
+      router.push("/");
+    }
   }
 
   return (
@@ -96,11 +107,12 @@ const FormRegister = () => {
             </FormItem>
           )}
         />
-
+        {error && <FormMessage>{error}</FormMessage>}
         <div className="flex flex-col">
-          <Button type="submit" className="hover:bg-sky-500">
-            Registrar usuario
-          </Button>
+          <LoadingButton
+            pending={form.formState.isSubmitting}
+            label="Registrarse"
+          />
           <div className="flex justify-between">
             <Button variant="link">
               <Link href="/" className="hover:text-sky-500">
