@@ -17,6 +17,13 @@ const Navbar = async () => {
       <img src="logo.png" alt="Logo" className="h-14 w-14 rounded-2xl" />
       {session?.user ? (
         <ul className="flex items-center gap-4">
+          {session.user.role === "ADMIN" && (
+            <li>
+              <Link href={"/dashboard"} className="hover:underline">
+                Dashboard
+              </Link>
+            </li>
+          )}
           <li>{session?.user?.username}!</li>
           <Popover>
             <PopoverTrigger>
@@ -52,7 +59,9 @@ const Navbar = async () => {
           </Popover>
         </ul>
       ) : (
-        <Link href="/login">Login</Link>
+        <Link href="/login" className="hover:underline">
+          Iniciar Sesión
+        </Link>
       )}
     </nav>
   );

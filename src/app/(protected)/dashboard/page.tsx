@@ -1,33 +1,40 @@
-import { CardAnime } from "@/components/card-anime";
-import instance from "@/lib/instance";
-import { AnimeResponse } from "@/types/anime";
+"use client";
 
-async function getAnimes(): Promise<AnimeResponse | null> {
-  try {
-    const response = await instance.get("/api/v1/animes/all");
-    return response.data as AnimeResponse;
-  } catch (error) {
-    console.error("Error fetching animes:", error);
-    return null;
-  }
-}
+import AnimeList from "@/components/anime-list";
+import { useToast } from "@/hooks/use-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteAnime } from "./api";
 
-export default async function Dashboard() {
-  const animeResponse = await getAnimes();
-  const animes = animeResponse?.content;
+export default function Dashboard() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
 
+  const deleteMutation = useMutation({
+    mutationFn: deleteAnime,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["animes"] });
+    },
+  });
+
+  const handleDelete = async (id: number, title: string) => {
+    try {
+      await deleteMutation.mutateAsync(id);
+      toast({
+        title: "Éxito",
+        description: `El anime ${title} se eliminó con éxito`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: `Error eliminando el anime: ${error}`,
+      });
+      console.error("Error deleting anime:", error);
+    }
+  };
   return (
     <div className="p-4">
       <h1 className="mb-4 text-2xl font-bold">Anime Dashboard</h1>
-      {animes ? (
-        <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {animes.map((anime, index) => (
-            <CardAnime key={index} {...anime} />
-          ))}
-        </ul>
-      ) : (
-        <p>Failed to load animes.</p>
-      )}
+      <AnimeList isAdmin={true} onDelete={handleDelete} />
     </div>
   );
 }

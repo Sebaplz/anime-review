@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Providers from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,10 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body
-        className={`mx-auto min-h-screen max-w-7xl bg-[url('https://static.vecteezy.com/system/resources/previews/046/892/800/non_2x/comic-panels-in-various-colors-and-angles-comic-images-image-panels-cartoon-backgrounds-suitable-for-headlines-or-places-for-anime-images-vector.jpg')] bg-repeat-round text-white ${inter.className}`}
-      >
-        {children}
+      <body className={`mx-auto min-h-screen max-w-7xl ${inter.className}`}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

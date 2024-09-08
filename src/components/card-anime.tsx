@@ -1,32 +1,48 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Anime } from "@/types/anime";
+import { DialogDelete } from "./dialog-delete";
 
-export function CardAnime(anime: Anime) {
+interface CardAnimeProps {
+  anime: Anime;
+  onDelete?: (id: number, title: string) => void;
+  isAdmin: boolean;
+}
+
+export function CardAnime({ anime, onDelete, isAdmin }: CardAnimeProps) {
   return (
-    <Card key={anime.id} className="flex">
-      <CardHeader className="p-0">
-        <img
-          src={anime.urlImage}
-          alt={anime.title}
-          className="h-[250px] w-[300px] rounded-t-lg object-cover"
-        />
+    <Card key={anime.id} className="flex flex-col sm:flex-row">
+      <CardHeader className="p-0 sm:w-[150px] xl:w-[200px]">
+        <div className="relative aspect-[3/4] w-full sm:h-full">
+          <img
+            src={anime.urlImage}
+            alt={anime.title}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </div>
       </CardHeader>
-      <CardContent className="p-4">
-        <h2 className="mb-2 text-xl font-bold text-black">{anime.title}</h2>
-        <div className="mb-4 flex flex-wrap gap-2">
-          {anime.genres.map((genre, index) => (
-            <span key={index} className="text-xs text-cyan-400">
-              {genre.name}
-            </span>
-          ))}
+      <CardContent className="flex flex-1 flex-col p-4">
+        <div className="flex-1">
+          <h2 className="mb-2 text-xl font-bold text-black">{anime.title}</h2>
+          <div className="mb-4 flex flex-wrap gap-2">
+            {anime.genres.map((genre, index) => (
+              <span key={index} className="text-xs text-cyan-400">
+                {genre.name}
+              </span>
+            ))}
+          </div>
+          <div className="mb-4">
+            <p className="line-clamp-3">{anime.synopsis}</p>
+          </div>
         </div>
-        <div className="mb-4 flex gap-2">
-          <Button className="bg-cyan-500 text-black hover:bg-cyan-600">
-            Editar
-          </Button>
-          <Button variant="destructive">Eliminar</Button>
-        </div>
+        {isAdmin && (
+          <div className="mt-auto flex gap-2">
+            <Button className="bg-yellow-500 text-white hover:bg-yellow-600">
+              Editar
+            </Button>
+            {onDelete && <DialogDelete anime={anime} onDelete={onDelete} />}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
