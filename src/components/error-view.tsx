@@ -16,7 +16,7 @@ export default function ErrorView({ error }: ErrorViewProps) {
   return (
     <div
       className="flex items-center justify-center p-4"
-      style={{ height: `calc(100vh - 88px)` }}
+      style={{ height: `calc(100vh - 150px)` }}
     >
       <Card className="w-full max-w-md">
         <CardHeader>

@@ -33,7 +33,6 @@ export default function Dashboard() {
   };
   return (
     <div className="p-4">
-      <h1 className="mb-4 text-2xl font-bold">Anime Dashboard</h1>
       <AnimeList isAdmin={true} onDelete={handleDelete} />
     </div>
   );

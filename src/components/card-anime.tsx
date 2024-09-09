@@ -11,13 +11,16 @@ interface CardAnimeProps {
 
 export function CardAnime({ anime, onDelete, isAdmin }: CardAnimeProps) {
   return (
-    <Card key={anime.id} className="flex flex-col sm:flex-row">
+    <Card
+      key={anime.id}
+      className="flex h-[350px] w-[400px] flex-col sm:flex-row"
+    >
       <CardHeader className="p-0 sm:w-[150px] xl:w-[200px]">
         <div className="relative aspect-[3/4] w-full sm:h-full">
           <img
             src={anime.urlImage}
             alt={anime.title}
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full rounded-l-md object-cover"
           />
         </div>
       </CardHeader>
@@ -32,7 +35,11 @@ export function CardAnime({ anime, onDelete, isAdmin }: CardAnimeProps) {
             ))}
           </div>
           <div className="mb-4">
-            <p className="line-clamp-3">{anime.synopsis}</p>
+            {isAdmin ? (
+              <p className="line-clamp-3">{anime.synopsis}</p>
+            ) : (
+              <p className="line-clamp-6">{anime.synopsis}</p>
+            )}
           </div>
         </div>
         {isAdmin && (
