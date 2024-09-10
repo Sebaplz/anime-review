@@ -4,6 +4,8 @@ import AnimeList from "@/components/anime-list";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteAnime } from "./api";
+import { AnimeFormDialog } from "./_components/anime-form-dialog";
+import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
   const queryClient = useQueryClient();
@@ -26,14 +28,23 @@ export default function Dashboard() {
     } catch (error) {
       toast({
         title: "Error",
-        description: `Error eliminando el anime: ${error}`,
+        description: `Error eliminando el anime!`,
+        variant: "destructive",
       });
       console.error("Error deleting anime:", error);
     }
   };
+
   return (
-    <div className="p-4">
+    <main className="flex flex-col items-end">
+      <AnimeFormDialog
+        triggerButton={
+          <Button className="mx-4 bg-green-500 text-white hover:bg-green-600">
+            Añadir Nuevo Anime
+          </Button>
+        }
+      />
       <AnimeList isAdmin={true} onDelete={handleDelete} />
-    </div>
+    </main>
   );
 }

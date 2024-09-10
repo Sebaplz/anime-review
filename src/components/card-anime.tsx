@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Anime } from "@/types/anime";
 import { DialogDelete } from "./dialog-delete";
+import { AnimeFormDialog } from "@/app/(protected)/dashboard/_components/anime-form-dialog";
 
 interface CardAnimeProps {
   anime: Anime;
@@ -13,7 +14,7 @@ export function CardAnime({ anime, onDelete, isAdmin }: CardAnimeProps) {
   return (
     <Card
       key={anime.id}
-      className="flex h-[350px] w-[400px] flex-col sm:flex-row"
+      className="flex flex-col sm:flex-row md:h-[350px] lg:w-[400px]"
     >
       <CardHeader className="p-0 sm:w-[150px] xl:w-[200px]">
         <div className="relative aspect-[3/4] w-full sm:h-full">
@@ -44,9 +45,14 @@ export function CardAnime({ anime, onDelete, isAdmin }: CardAnimeProps) {
         </div>
         {isAdmin && (
           <div className="mt-auto flex gap-2">
-            <Button className="bg-yellow-500 text-white hover:bg-yellow-600">
-              Editar
-            </Button>
+            <AnimeFormDialog
+              anime={anime}
+              triggerButton={
+                <Button className="bg-yellow-500 text-white hover:bg-yellow-600">
+                  Editar
+                </Button>
+              }
+            />
             {onDelete && <DialogDelete anime={anime} onDelete={onDelete} />}
           </div>
         )}

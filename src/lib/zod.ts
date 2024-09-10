@@ -27,3 +27,20 @@ export const registerSchema = object({
   path: ["confirmPassword"],
   message: "Las contraseñas no coinciden",
 });
+
+export const genreSchema = object({
+  name: string({
+    required_error: "El género es requerido",
+  })
+    .min(4, "El género debe tener al menos 4 caracteres")
+    .max(32, "El género debe tener como máximo 32 caracteres")
+    .regex(
+      /^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s-]+$/,
+      "El género solo puede contener letras, espacios y guiones",
+    )
+    .transform((name) => name.trim())
+    .refine((name) => name.length >= 4, {
+      message:
+        "El género debe tener al menos 4 caracteres después de eliminar espacios en blanco",
+    }),
+});

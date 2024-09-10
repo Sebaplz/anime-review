@@ -36,8 +36,8 @@ export default function AnimeList({ isAdmin, onDelete }: AnimeListProps) {
 
   if (isLoading) {
     return (
-      <div className="p-4">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="w-full p-4">
+        <div className="grid grid-cols-1 justify-items-center gap-4 md:grid-cols-2 xl:grid-cols-3">
           {Array(size)
             .fill(0)
             .map((_, index) => (
@@ -91,9 +91,9 @@ export default function AnimeList({ isAdmin, onDelete }: AnimeListProps) {
 
   return (
     <>
-      <div className="p-4">
+      <div className="w-full p-4">
         {animes.length > 0 ? (
-          <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid grid-cols-1 justify-items-center gap-4 md:grid-cols-2 xl:grid-cols-3">
             {animes.map((anime) => (
               <CardAnime
                 key={anime.id}
@@ -107,7 +107,7 @@ export default function AnimeList({ isAdmin, onDelete }: AnimeListProps) {
           <p>No hay animes disponibles.</p>
         )}
       </div>
-      <Pagination>
+      <Pagination className="pb-4">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
