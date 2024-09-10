@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar";
 import React from "react";
 import { auth } from "../../../auth";
 import { redirect } from "next/navigation";
+import { Toaster } from "@/components/ui/toaster";
 
 const AdminLayout = async ({
   children,
@@ -17,6 +18,7 @@ const AdminLayout = async ({
     <>
       <Navbar />
       {children}
+      <Toaster />
     </>
   );
 };

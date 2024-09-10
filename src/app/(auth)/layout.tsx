@@ -6,7 +6,7 @@ const AuthLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <div className={`flex min-h-screen items-center justify-center text-black`}>
+    <div className="flex min-h-screen items-center justify-center text-black">
       <div className="md:mx-25 rounded-md bg-white md:flex">
         <img
           src="/images/login-img-web.webp"

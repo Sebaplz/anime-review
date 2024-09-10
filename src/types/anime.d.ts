@@ -3,6 +3,10 @@ export interface Genre {
   name: string;
 }
 
+export interface GenreId {
+  id: number;
+}
+
 export interface Anime {
   id: number;
   title: string;
@@ -22,4 +26,22 @@ export interface PageInfo {
 export interface AnimeResponse {
   content: Anime[];
   page: PageInfo;
+}
+
+export interface GenreResponse {
+  content: Genre[];
+  page: Page;
+}
+
+export interface UpdateAnimeResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface UpdateAnime {
+  title: string;
+  urlImage: string;
+  synopsis: string;
+  releaseYear: number;
+  genres: GenreId[];
 }
