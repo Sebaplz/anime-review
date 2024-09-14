@@ -1,16 +1,12 @@
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { LogOut, Pencil } from "lucide-react";
-import Link from "next/link";
-import { auth, signOut } from "../../auth";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
+"use client";
 
-const Navbar = async () => {
-  const session = await auth();
+import Link from "next/link";
+import PerfilImg from "./navbar/perfil-img";
+import { useSession } from "next-auth/react";
+
+const Navbar = () => {
+  const { data: session } = useSession();
+  console.log(session);
 
   return (
     <nav className="flex items-center justify-between p-4">
@@ -34,38 +30,7 @@ const Navbar = async () => {
             </>
           )}
           <li>{session?.user?.username}!</li>
-          <Popover>
-            <PopoverTrigger>
-              <Avatar>
-                <AvatarImage src="avatar.png" />
-                <AvatarFallback className="text-black">
-                  {session.user.username.slice(0, 2)}
-                </AvatarFallback>
-              </Avatar>
-            </PopoverTrigger>
-            <PopoverContent className="mr-10 mt-4 flex flex-col justify-center md:w-96">
-              <img src="avatar.png" alt="Avatar" />
-              <div className="flex flex-wrap justify-center gap-4 md:justify-between">
-                <Button variant="secondary">
-                  Cambiar Imagen
-                  <Pencil className="ml-2 h-4 w-4" />
-                </Button>
-                <form
-                  action={async () => {
-                    "use server";
-                    await signOut({
-                      redirectTo: "/",
-                    });
-                  }}
-                >
-                  <Button variant="destructive" type="submit">
-                    Cerrar Sesión
-                    <LogOut className="ml-2 h-4 w-4" />
-                  </Button>
-                </form>
-              </div>
-            </PopoverContent>
-          </Popover>
+          <PerfilImg session={session} />
         </ul>
       ) : (
         <Link href="/login" className="hover:underline">

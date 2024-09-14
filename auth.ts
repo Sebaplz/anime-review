@@ -42,12 +42,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.user = user;
         token.role = user.role;
+        token.picture = user.urlImage;
       }
       return token;
     },
     async session({ session, token }) {
       session.user = token.user as any;
       session.user.role = token.role;
+      session.user.urlImage = token.picture;
       return session;
     },
   },
